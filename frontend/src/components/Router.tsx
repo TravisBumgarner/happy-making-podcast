@@ -1,0 +1,20 @@
+import { Routes, Route } from 'react-router-dom'
+import Feed from '../pages/Feed'
+import FeedItem from '../pages/FeedItem'
+import Contact from '../pages/Contact'
+import Recommend from '../pages/Recommend'
+import About from '../pages/About'
+
+import { ROUTES } from '../consts'
+
+const Router = () => (
+  <Routes>
+    <Route path={ROUTES.feed.href()} element={<Feed />} />
+    <Route path={ROUTES.feedItem.href()} element={<FeedItem />} />
+    <Route path={ROUTES.contact.href()} element={<Contact />} />
+    <Route path={ROUTES.recommend.href()} element={<Recommend />} />
+    <Route path={ROUTES.about.href()} element={<About />} />
+  </Routes>
+)
+
+export default Router

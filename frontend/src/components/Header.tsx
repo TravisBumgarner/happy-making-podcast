@@ -10,7 +10,7 @@ const Header = () => {
 
   if (!feedChannel) return null
   return (
-    <header style={{ padding: SPACING.LARGE.PX }}>
+    <header>
       <PageWrapper width="medium">
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box

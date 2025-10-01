@@ -2,7 +2,7 @@ import Header from './components/Header'
 import useFetchRSSFeed from './hooks/useFetchRSSFeed'
 import Router from './components/Router'
 import { Box } from '@mui/material'
-import { Z_INDICES } from './styles/consts'
+import { SPACING, Z_INDICES } from './styles/consts'
 import Loading from './sharedComponents/Loading'
 import { BrowserRouter } from 'react-router-dom'
 import AppThemeProvider from './styles/Theme'
@@ -29,10 +29,17 @@ function App() {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        padding: SPACING.MEDIUM.PX,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: SPACING.LARGE.PX
+      }}
+    >
       <Header />
       <Router />
-    </>
+    </Box>
   )
 }
 

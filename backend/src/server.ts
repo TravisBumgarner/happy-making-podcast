@@ -13,7 +13,13 @@ const app = express();
 // ---------- ESM dirname ----------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const frontendDist = path.resolve(__dirname, "../../frontend/dist");
+
+let frontendDist;
+if (process.env.NODE_ENV === "production") {
+  frontendDist = path.resolve(__dirname, "./frontend");
+} else {
+  frontendDist = path.resolve(__dirname, "../dist/frontend");
+}
 const indexPath = path.join(frontendDist, "index.html");
 
 // ---------- RSS Parser ----------

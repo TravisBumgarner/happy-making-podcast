@@ -9,7 +9,7 @@ import AppThemeProvider from './styles/Theme'
 
 function App() {
   const { error, loading } = useFetchRSSFeed()
-  console.log('loading', loading, 'error', error)
+
   if (loading) {
     return (
       <Box

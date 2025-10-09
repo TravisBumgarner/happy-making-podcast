@@ -9,8 +9,6 @@ const Feed = () => {
   const feedItems = useGlobalStore(state => state.feedItems)
   const theme = useTheme()
 
-  console.log('Rendering Feed with items:', feedItems)
-
   return (
     <PageWrapper width="medium">
       <List>

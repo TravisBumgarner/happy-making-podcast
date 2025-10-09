@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import useGlobalStore from '../store'
 
-const API_URL = 'http://localhost:8000/api/rss'
+const API_URL = import.meta.env.PROD
+  ? 'https://happymaking.art/api/rss'
+  : 'http://localhost:8000/api/rss'
 
 const useFetchFeed = () => {
   const setPodcast = useGlobalStore(state => state.setPodcast)
@@ -16,7 +18,6 @@ const useFetchFeed = () => {
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const data = await res.json()
-        console.log('setting data', data)
         setPodcast(data)
       } catch (err: any) {
         if (err.name !== 'AbortError') {

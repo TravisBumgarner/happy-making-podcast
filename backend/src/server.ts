@@ -75,7 +75,11 @@ const parser = new Parser({
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://happymaking.art"],
+    origin: [
+      "http://localhost:5173",
+      "https://happymaking.art",
+      "https://happymaking.nfshost.com",
+    ],
   })
 );
 
@@ -102,12 +106,6 @@ app.get("/api/rss", async (_req: Request, res: Response) => {
     const normalized = normalizeFeed(feed);
 
     res.json(normalized);
-
-    if (normalized.items?.[0]?.youtube) {
-      console.log("✅ YouTube parsed:", normalized.items[0].youtube);
-    } else {
-      console.log("ℹ️ No YouTube data found on first item");
-    }
   } catch (err) {
     console.error("❌ RSS fetch/parse error:", err);
     res.status(500).json({ error: "Failed to fetch or parse RSS" });
@@ -115,9 +113,14 @@ app.get("/api/rss", async (_req: Request, res: Response) => {
 });
 
 // Fallback for React Router
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(frontendDist, "index.html"));
-});
+if (process.env.NODE_ENV === "production") {
+  const frontendDist = path.join(__dirname, "frontend");
+
+  app.use(express.static(frontendDist));
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(frontendDist, "index.html"));
+  });
+}
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

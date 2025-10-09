@@ -14,14 +14,12 @@ const FeedItem = () => {
   const feedItem = getFeedItemByGuid(guid ?? '')
   const theme = useTheme()
 
-  console.log('guid', guid, feedItem)
   if (!guid || !feedItem) {
     return <Error404 />
   }
 
-  // Process the description to convert Cloudinary URLs to images
   const processedDescription = convertCloudinaryUrlsToImages(feedItem.content)
-  console.log('foo', feedItem)
+
   return (
     <PageWrapper width="medium">
       <Box

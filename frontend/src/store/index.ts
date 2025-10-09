@@ -9,7 +9,6 @@ const useGlobalStore = create<State>()(
       podcast: null,
       setPodcast: (podcast: PodcastFeed) => set({ podcast }),
       getFeedItemByGuid: (guid: string) => {
-        console.log('items', get().podcast?.items)
         return get().podcast?.items.find(item => item.guid === guid)
       }
     }),

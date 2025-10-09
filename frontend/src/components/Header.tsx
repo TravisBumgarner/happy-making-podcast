@@ -8,7 +8,7 @@ import { Link as RouterLink } from 'react-router-dom'
 
 const Header = () => {
   const podcast = useGlobalStore(state => state.podcast)
-  console.log('is podcdd', podcast)
+
   if (!podcast) return null
   return (
     <header>

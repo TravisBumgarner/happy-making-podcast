@@ -8,6 +8,11 @@ import { fileURLToPath } from "url";
 
 const FEED_URL = "https://feeds.captivate.fm/happy-making/";
 
+const FALLBACK_TITLE = "Happy Making";
+const FALLBACK_DESCRIPTION = "A podcast for hobbying vicariously.";
+const FALLBACK_URL = "https://happymaking.art";
+const OG_IMAGE = "https://happymaking.art/og.png";
+
 const app = express();
 
 // ---------- ESM dirname ----------
@@ -21,6 +26,9 @@ if (process.env.NODE_ENV === "production") {
   frontendDist = path.resolve(__dirname, "../dist/frontend");
 }
 const indexPath = path.join(frontendDist, "index.html");
+
+let baseHTML = fs.readFileSync(indexPath, "utf8");
+let baseHTMLWithOG = "";
 
 // ---------- RSS Parser ----------
 const parser = new Parser({
@@ -57,6 +65,8 @@ function injectOg(
     <meta name="twitter:title" content="${meta.title}">
     <meta name="twitter:description" content="${meta.description}">
     <meta name="twitter:image" content="${meta.image}">
+    <meta property="og:logo" content="${OG_IMAGE}" />
+
   `;
   return html.replace("</head>", `${tags}\n</head>`);
 }
@@ -64,6 +74,7 @@ function injectOg(
 // ---------- Serve static assets ----------
 app.use("/assets", express.static(path.join(frontendDist, "assets")));
 app.use("/favicon.png", express.static(path.join(frontendDist, "favicon.png")));
+app.use("/og.png", express.static(path.join(frontendDist, "og.png")));
 
 // ---------- API ----------
 app.get("/api/rss", async (_req: Request, res: Response) => {
@@ -78,39 +89,9 @@ app.get("/api/rss", async (_req: Request, res: Response) => {
   }
 });
 
-// ---------- Root route ----------
-app.get("/", async (_req, res) => {
-  const html = fs.readFileSync(indexPath, "utf8");
-
-  try {
-    // Fetch and parse once
-    const response = await fetch(FEED_URL);
-    const xml = await response.text();
-    const feed = await parser.parseString(xml);
-
-    // Pull real metadata from feed
-    const title = feed.title ?? "Happy Making";
-    const description =
-      feed.description ??
-      "Exploring the creative process, one maker at a time.";
-    const image =
-      feed.itunes?.image ??
-      feed.image?.url ??
-      "https://res.cloudinary.com/hqjbxtyku/image/upload/f_auto,q_auto/happymaking-og.jpg";
-    const url = feed.link ?? "https://happymaking.art";
-
-    const withOg = injectOg(html, { title, description, image, url });
-    res.type("html").send(withOg);
-  } catch (err) {
-    console.error("❌ Root OG injection error:", err);
-    res.type("html").send(html);
-  }
-});
-
 // ---------- Episode OG route ----------
 app.get("/episode/:slug", async (req, res) => {
   const slug = req.params.slug;
-  const html = fs.readFileSync(indexPath, "utf8");
 
   try {
     const response = await fetch(FEED_URL);
@@ -119,27 +100,48 @@ app.get("/episode/:slug", async (req, res) => {
     console.log(feed.items);
     const episode = feed.items.find(({ guid }) => guid === slug);
 
-    const title = episode?.title ?? "Happy Making Episode";
+    const title = episode?.title ?? FALLBACK_TITLE;
     const description =
       ((episode as any)?.["content:encodedSnippet"] as string | undefined)
         ?.replace(/<[^>]+>/g, "")
-        .slice(0, 180) ?? "Listen to the latest episode of Happy Making.";
-    const image =
-      (episode as any)?.itunes?.image ??
-      "https://res.cloudinary.com/hqjbxtyku/image/upload/f_auto,q_auto/happymaking-og.jpg";
-    const url = episode?.link ?? `https://happymaking.art/episode/${slug}`;
+        .slice(0, 180) ?? FALLBACK_DESCRIPTION;
+    const image = (episode as any)?.itunes?.image ?? OG_IMAGE;
+    const url = episode?.link ?? `${FALLBACK_URL}/episode/${slug}`;
 
-    const withOg = injectOg(html, { title, description, image, url });
+    const withOg = injectOg(baseHTML, { title, description, image, url });
     res.type("html").send(withOg);
   } catch (err) {
     console.error("❌ Episode OG injection error:", err);
-    res.type("html").send(html);
+    res.type("html").send(baseHTML);
   }
 });
 
 // ---------- Catch-all fallback ----------
-app.get("*", (_req, res) => {
-  res.sendFile(indexPath);
+app.get("*", async (_req, res) => {
+  try {
+    if (baseHTMLWithOG) {
+      res.type("html").send(baseHTMLWithOG);
+      return;
+    }
+
+    // Fetch and parse once
+    const response = await fetch(FEED_URL);
+    const xml = await response.text();
+    const feed = await parser.parseString(xml);
+
+    // Pull real metadata from feed
+    const title = feed.title ?? FALLBACK_TITLE;
+    const description = feed.itunes?.subtitle ?? FALLBACK_DESCRIPTION;
+    const image = OG_IMAGE;
+    const url = feed.link ?? FALLBACK_URL;
+
+    const withOg = injectOg(baseHTML, { title, description, image, url });
+    baseHTMLWithOG = withOg;
+    res.type("html").send(withOg);
+  } catch (err) {
+    console.error("❌ Root OG injection error:", err);
+    res.type("html").send(baseHTML);
+  }
 });
 
 // ---------- Start ----------

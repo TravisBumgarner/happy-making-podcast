@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider'
 import { useCallback, useState } from 'react'
 import { ROUTES } from '../consts'
 import { BORDER_RADIUS } from '../styles/consts'
+import { Link as RouterLink } from 'react-router-dom'
 import Link from '@mui/material/Link'
 
 const DROPDOWN_ROUTES: Array<keyof typeof ROUTES | 'divider'> = [
@@ -25,7 +26,7 @@ const DropdownLinks = ({ onClose }: { onClose: () => void }) => {
         key === 'divider' ? (
           <Divider key={key + index} />
         ) : (
-          <Link key={key} href={ROUTES[key].href()}>
+          <Link component={RouterLink} key={key} to={ROUTES[key].href()}>
             <MenuItem onClick={onClose}>{ROUTES[key].label}</MenuItem>
           </Link>
         )

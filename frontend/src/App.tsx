@@ -1,16 +1,18 @@
 import Header from './components/Header'
-import useFetchRSSFeed from './hooks/useFetchRSSFeed'
 import Router from './components/Router'
 import { Box } from '@mui/material'
 import { SPACING, Z_INDICES } from './styles/consts'
 import Loading from './sharedComponents/Loading'
 import { BrowserRouter } from 'react-router-dom'
 import AppThemeProvider from './styles/Theme'
+import useFetchFeed from './hooks/useFetchFeed'
+import useGlobalStore from './store'
 
 function App() {
-  const { error, loading } = useFetchRSSFeed()
-  console.log('loading', loading, 'error', error)
-  if (loading) {
+  const podcast = useGlobalStore(state => state.podcast)!!
+  useFetchFeed()
+
+  if (!podcast) {
     return (
       <Box
         sx={{

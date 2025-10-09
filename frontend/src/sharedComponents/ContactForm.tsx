@@ -130,14 +130,14 @@ const ContactForm = ({
         {success && (
           <Message
             includeVerticalMargin
-            message="Thank you for your feedback!"
+            message="Thank you for your message!"
             color="success"
           />
         )}
         {failure && (
           <Message
             includeVerticalMargin
-            message="Failed to send feedback. Please try again later."
+            message="Failed to send message. Please try again later."
             color="error"
           />
         )}

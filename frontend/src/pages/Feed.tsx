@@ -1,49 +1,69 @@
-import { Box, Link, List, ListItem, Typography, useTheme } from '@mui/material'
+import { Box, List, ListItem, Typography, useTheme } from '@mui/material'
 import useGlobalStore from '../store'
+import { Link as RouterLink } from 'react-router-dom'
+import Link from '@mui/material/Link'
 
 import { ROUTES } from '../consts'
 import { SPACING, subtleBackground } from '../styles/consts'
 import PageWrapper from '../sharedComponents/PageWrapper'
 
-const Feed = () => {
-  const feedItems = useGlobalStore(state => state.feedItems)
-  const theme = useTheme()
+const getFirstParagraph = (html: string) => {
+  const div = document.createElement('div')
+  div.innerHTML = html
+  const p = div.querySelector('p')
+  return p ? p.innerHTML : ''
+}
 
-  console.log('Rendering Feed with items:', feedItems)
+const Feed = () => {
+  const feedItems = useGlobalStore(state => state.podcast?.items)
+  const theme = useTheme()
 
   return (
     <PageWrapper width="medium">
       <List>
-        {feedItems.map(feedItem => (
-          <Link key={feedItem.guid} href={ROUTES.feedItem.href(feedItem.guid)}>
-            <ListItem
-              sx={{
-                backgroundColor: subtleBackground(theme.palette.mode),
-                '&:hover': {
-                  backgroundColor: subtleBackground(
-                    theme.palette.mode,
-                    'slightly'
-                  )
-                }
-              }}
+        {feedItems &&
+          feedItems.map(feedItem => (
+            <Link
+              component={RouterLink}
+              key={feedItem.guid}
+              to={ROUTES.episode.href(feedItem.guid)}
             >
-              {' '}
-              <Box
+              <ListItem
                 sx={{
-                  padding: SPACING.MEDIUM.PX,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: SPACING.SMALL.PX
+                  backgroundColor: subtleBackground(theme.palette.mode),
+                  '&:hover': {
+                    backgroundColor: subtleBackground(
+                      theme.palette.mode,
+                      'slightly'
+                    )
+                  }
                 }}
               >
-                <Typography variant="h6">{feedItem.title}</Typography>
+                {' '}
+                <Box
+                  sx={{
+                    padding: SPACING.MEDIUM.PX,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: SPACING.SMALL.PX
+                  }}
+                >
+                  <Typography variant="h2">{feedItem.title}</Typography>
 
-                <Typography>{feedItem.pubDate.toLocaleDateString()}</Typography>
-                <Typography>{feedItem.shortDescription}</Typography>
-              </Box>
-            </ListItem>
-          </Link>
-        ))}
+                  <Typography variant="body2">
+                    {new Date(feedItem.pubDate).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="body1" color="textSecondary">
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: getFirstParagraph(feedItem.content)
+                      }}
+                    />
+                  </Typography>
+                </Box>
+              </ListItem>
+            </Link>
+          ))}
       </List>
     </PageWrapper>
   )

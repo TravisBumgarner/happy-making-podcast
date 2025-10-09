@@ -1,9 +1,7 @@
-import { type FeedChannel, type FeedItem } from '../types'
+import { type Episode, type PodcastFeed } from '../types'
 
 export interface State {
-  feedItems: FeedItem[]
-  setFeedItems: (feedItems: FeedItem[]) => void
-  feedChannel: FeedChannel | null
-  setFeedChannel: (channel: FeedChannel) => void
-  getFeedItemByGuid: (guid: string) => FeedItem | undefined
+  podcast: PodcastFeed | null
+  setPodcast: (podcast: PodcastFeed) => void
+  getFeedItemByGuid: (guid: string) => Episode | undefined
 }

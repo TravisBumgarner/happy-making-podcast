@@ -26,7 +26,7 @@ const Feed = () => {
             <Link
               component={RouterLink}
               key={feedItem.guid}
-              to={ROUTES.feedItem.href(feedItem.guid)}
+              to={ROUTES.episode.href(feedItem.guid)}
             >
               <ListItem
                 sx={{

@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import useGlobalStore from '../store'
 
-const API_URL = import.meta.env.PROD
-  ? 'https://happymaking.art/api/rss'
-  : 'http://localhost:8000/api/rss'
+// const API_URL = import.meta.env.PROD
+//   ? 'https://happymaking.art/api/rss'
+//   : 'http://localhost:8000/api/rss'
+
+const API_URL = 'http://localhost:8000/api/rss' // --- IGNORE ---
 
 const useFetchFeed = () => {
   const setPodcast = useGlobalStore(state => state.setPodcast)

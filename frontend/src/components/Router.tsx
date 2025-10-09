@@ -10,7 +10,7 @@ import { ROUTES } from '../consts'
 const Router = () => (
   <Routes>
     <Route path={ROUTES.feed.href()} element={<Feed />} />
-    <Route path={ROUTES.feedItem.href()} element={<FeedItem />} />
+    <Route path={ROUTES.episode.href()} element={<FeedItem />} />
     <Route path={ROUTES.contact.href()} element={<Contact />} />
     <Route path={ROUTES.recommend.href()} element={<Recommend />} />
     <Route path={ROUTES.about.href()} element={<About />} />

@@ -20,9 +20,9 @@ export const ROUTES: Record<string, Route> = {
     href: () => '/contact',
     label: 'Contact'
   },
-  feedItem: {
-    key: 'feedItem',
-    href: (guid?: string) => (guid ? `/feed-item/${guid}` : '/feed-item/:guid'),
+  episode: {
+    key: 'episode',
+    href: (guid?: string) => (guid ? `/episode/${guid}` : '/episode/:guid'),
     label: ''
   },
   recommend: {

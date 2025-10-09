@@ -3,67 +3,20 @@ import fetch from "node-fetch";
 import Parser from "rss-parser";
 import path from "path";
 import cors from "cors";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 const FEED_URL = "https://feeds.captivate.fm/happy-making/";
 
-/** ---------- Types ---------- **/
-
-interface PodcastSource {
-  $: {
-    uri: string;
-  };
-}
-
-interface AlternateEnclosure {
-  $: {
-    type: string;
-    title: string;
-  };
-  "podcast:source"?: PodcastSource[];
-}
-
-interface FeedItem {
-  [key: string]: any;
-  title?: string;
-  link?: string;
-  pubDate?: string;
-  alternateEnclosure?: AlternateEnclosure[]; // rss-parser custom field
-  youtube?: {
-    title: string;
-    url: string;
-  } | null;
-}
-
-interface Feed {
-  [key: string]: any;
-  items: FeedItem[];
-}
-
-/** ---------- Normalize feed ---------- **/
-
-const normalizeFeed = (feed: Feed): Feed => ({
-  ...feed,
-  items: feed.items.map((item) => {
-    const alt = item.alternateEnclosure?.[0];
-    const sourceUri = alt?.["podcast:source"]?.[0]?.$?.uri;
-
-    const youtube =
-      alt?.$?.type === "video/youtube" && sourceUri
-        ? {
-            title: alt.$.title,
-            url: sourceUri,
-          }
-        : null;
-
-    return { ...item, youtube };
-  }),
-});
-
-/** ---------- App setup ---------- **/
-
 const app = express();
 
+// ---------- ESM dirname ----------
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDist = path.resolve(__dirname, "../../frontend/dist");
+const indexPath = path.join(frontendDist, "index.html");
+
+// ---------- RSS Parser ----------
 const parser = new Parser({
   customFields: {
     item: [
@@ -83,46 +36,106 @@ app.use(
   })
 );
 
-// Figure out __dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// ---------- Helper: OG injection ----------
+function injectOg(
+  html: string,
+  meta: { title: string; description: string; image: string; url: string }
+) {
+  const tags = `
+    <meta property="og:title" content="${meta.title}">
+    <meta property="og:description" content="${meta.description}">
+    <meta property="og:image" content="${meta.image}">
+    <meta property="og:url" content="${meta.url}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${meta.title}">
+    <meta name="twitter:description" content="${meta.description}">
+    <meta name="twitter:image" content="${meta.image}">
+  `;
+  return html.replace("</head>", `${tags}\n</head>`);
+}
 
-// Path to built React files
-const frontendDist = path.resolve(__dirname, "../../frontend/dist");
+// ---------- Serve static assets ----------
+app.use("/assets", express.static(path.join(frontendDist, "assets")));
+app.use("/favicon.png", express.static(path.join(frontendDist, "favicon.png")));
 
-// Serve frontend
-app.use(express.static(frontendDist));
-
-/** ---------- Routes ---------- **/
-
-// Proxy RSS to JSON
+// ---------- API ----------
 app.get("/api/rss", async (_req: Request, res: Response) => {
   try {
     const response = await fetch(FEED_URL);
-    if (!response.ok) throw new Error(`Fetch failed with ${response.status}`);
-
     const xml = await response.text();
     const feed = await parser.parseString(xml);
-    const normalized = normalizeFeed(feed);
-
-    res.json(normalized);
+    res.json(feed);
   } catch (err) {
-    console.error("❌ RSS fetch/parse error:", err);
-    res.status(500).json({ error: "Failed to fetch or parse RSS" });
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch RSS" });
   }
 });
 
-// Fallback for React Router
-if (process.env.NODE_ENV === "production") {
-  const frontendDist = path.join(__dirname, "frontend");
+// ---------- Root route ----------
+app.get("/", async (_req, res) => {
+  const html = fs.readFileSync(indexPath, "utf8");
 
-  app.use(express.static(frontendDist));
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(frontendDist, "index.html"));
-  });
-}
+  try {
+    // Fetch and parse once
+    const response = await fetch(FEED_URL);
+    const xml = await response.text();
+    const feed = await parser.parseString(xml);
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running: http://localhost:${PORT}`);
+    // Pull real metadata from feed
+    const title = feed.title ?? "Happy Making";
+    const description =
+      feed.description ??
+      "Exploring the creative process, one maker at a time.";
+    const image =
+      feed.itunes?.image ??
+      feed.image?.url ??
+      "https://res.cloudinary.com/hqjbxtyku/image/upload/f_auto,q_auto/happymaking-og.jpg";
+    const url = feed.link ?? "https://happymaking.art";
+
+    const withOg = injectOg(html, { title, description, image, url });
+    res.type("html").send(withOg);
+  } catch (err) {
+    console.error("❌ Root OG injection error:", err);
+    res.type("html").send(html);
+  }
 });
+
+// ---------- Episode OG route ----------
+app.get("/episode/:slug", async (req, res) => {
+  const slug = req.params.slug;
+  const html = fs.readFileSync(indexPath, "utf8");
+
+  try {
+    const response = await fetch(FEED_URL);
+    const xml = await response.text();
+    const feed = await parser.parseString(xml);
+    console.log(feed.items);
+    const episode = feed.items.find(({ guid }) => guid === slug);
+
+    const title = episode?.title ?? "Happy Making Episode";
+    const description =
+      ((episode as any)?.["content:encodedSnippet"] as string | undefined)
+        ?.replace(/<[^>]+>/g, "")
+        .slice(0, 180) ?? "Listen to the latest episode of Happy Making.";
+    const image =
+      (episode as any)?.itunes?.image ??
+      "https://res.cloudinary.com/hqjbxtyku/image/upload/f_auto,q_auto/happymaking-og.jpg";
+    const url = episode?.link ?? `https://happymaking.art/episode/${slug}`;
+
+    const withOg = injectOg(html, { title, description, image, url });
+    res.type("html").send(withOg);
+  } catch (err) {
+    console.error("❌ Episode OG injection error:", err);
+    res.type("html").send(html);
+  }
+});
+
+// ---------- Catch-all fallback ----------
+app.get("*", (_req, res) => {
+  res.sendFile(indexPath);
+});
+
+// ---------- Start ----------
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => console.log(`✅ Listening on http://localhost:${PORT}`));

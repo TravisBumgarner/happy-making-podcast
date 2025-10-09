@@ -1,5 +1,5 @@
-export interface PodcastFeed {
-  items: Episode[]
+export interface ParsedRSSFeed {
+  items: ParsedRSSItem[]
   feedUrl: string
   image: {
     link: string
@@ -23,10 +23,12 @@ export interface PodcastFeed {
     }
     image: string
     categories: string[]
-    categoriesWithSubs: {
+    categoriesWithSubs: Array<{
       name: string
-      subs: { name: string }[] | null
-    }[]
+      subs: Array<{
+        name: string
+      }> | null
+    }>
     author: string
     subtitle: string
     summary: string
@@ -34,7 +36,7 @@ export interface PodcastFeed {
   }
 }
 
-export interface Episode {
+export interface ParsedRSSItem {
   title: string
   link: string
   pubDate: string
@@ -55,10 +57,4 @@ export interface Episode {
     image: string
     episodeType: string
   }
-
-  /** ✅ Flattened YouTube info returned from backend */
-  youtube?: {
-    title: string
-    url: string
-  } | null
 }

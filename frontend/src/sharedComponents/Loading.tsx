@@ -11,7 +11,7 @@ const Loading = () => {
         flexGrow: 1
       }}
     >
-      <Typography>Fetching...</Typography>
+      <Typography>Loading happiness...</Typography>
     </Box>
   )
 }

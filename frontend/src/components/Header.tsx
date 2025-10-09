@@ -4,11 +4,12 @@ import { ROUTES } from '../consts'
 import { SPACING } from '../styles/consts'
 import Navigation from './Navigation'
 import PageWrapper from '../sharedComponents/PageWrapper'
+import { Link as RouterLink } from 'react-router-dom'
 
 const Header = () => {
-  const feedChannel = useGlobalStore(state => state.feedChannel)
-
-  if (!feedChannel) return null
+  const podcast = useGlobalStore(state => state.podcast)
+  console.log('is podcdd', podcast)
+  if (!podcast) return null
   return (
     <header>
       <PageWrapper width="medium">
@@ -22,17 +23,21 @@ const Header = () => {
           >
             <Box>
               <img
-                src={feedChannel.image}
-                alt={feedChannel.title}
+                src={podcast.image.url}
+                alt={podcast.title}
                 style={{ width: '50px' }}
               />
             </Box>
-            <Link href={ROUTES.feed.href()} style={{ textDecoration: 'none' }}>
+            <Link
+              component={RouterLink}
+              to={ROUTES.feed.href()}
+              style={{ textDecoration: 'none' }}
+            >
               <Typography variant="h1" style={{ whiteSpace: 'pre-wrap' }}>
-                {feedChannel.title}
+                {podcast.title}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                {feedChannel.summary}
+                {podcast.itunes.subtitle}
               </Typography>
             </Link>
           </Box>

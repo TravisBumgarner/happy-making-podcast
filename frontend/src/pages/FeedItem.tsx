@@ -13,15 +13,15 @@ const FeedItem = () => {
   const getFeedItemByGuid = useGlobalStore(state => state.getFeedItemByGuid)
   const feedItem = getFeedItemByGuid(guid ?? '')
   const theme = useTheme()
+
+  console.log('guid', guid, feedItem)
   if (!guid || !feedItem) {
     return <Error404 />
   }
 
   // Process the description to convert Cloudinary URLs to images
-  const processedDescription = convertCloudinaryUrlsToImages(
-    feedItem.description
-  )
-
+  const processedDescription = convertCloudinaryUrlsToImages(feedItem.content)
+  console.log('foo', feedItem)
   return (
     <PageWrapper width="medium">
       <Box
@@ -35,7 +35,7 @@ const FeedItem = () => {
       >
         <Box>
           <Typography variant="h2">{feedItem.title}</Typography>
-          <Typography>{feedItem.pubDate.toLocaleDateString()}</Typography>
+          <Typography variant="body2">{feedItem.pubDate}</Typography>
         </Box>
         <audio
           controls
@@ -45,10 +45,8 @@ const FeedItem = () => {
             borderRadius: BORDER_RADIUS.ZERO.PX
           }}
         />
-        {feedItem.alternateEnclosures['video/youtube'] && (
-          <YouTubeEmbed
-            videoUrl={feedItem.alternateEnclosures['video/youtube'].source}
-          />
+        {feedItem.youtube?.url && (
+          <YouTubeEmbed videoUrl={feedItem.youtube.url} />
         )}
         <Box
           sx={{

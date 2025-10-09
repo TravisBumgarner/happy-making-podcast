@@ -8,8 +8,9 @@ const Contact = () => {
     <PageWrapper width="small" minHeight staticContent>
       <Typography variant="h2">Recommend a guest!</Typography>
       <Typography variant="body1">
-        Please nominate a person or organization that you think would make a
-        great guest for the podcast. We'd love to hear your suggestions!
+        Know someone with a great story about creativity, making, or chasing
+        ideas? Nominate them (or yourself!) to be featured on the podcast. We
+        would love to hear your suggestions.
       </Typography>
       <ContactForm formSuffix="recommend" />
     </PageWrapper>

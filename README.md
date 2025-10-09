@@ -1,3 +1,5 @@
 # Happy Making Podcast
 
-A podcast about making - whatever that means to you.
+A podcast for hobbying vicariously.
+
+https://happymaking.art/

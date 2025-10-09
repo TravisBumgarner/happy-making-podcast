@@ -1,10 +1,11 @@
-import { Box, Link, Typography } from '@mui/material'
+import { Box, Link, List, ListItem, Typography } from '@mui/material'
 import useGlobalStore from '../store'
 import { ROUTES } from '../consts'
 import { SPACING } from '../styles/consts'
 import Navigation from './Navigation'
 import PageWrapper from '../sharedComponents/PageWrapper'
 import { Link as RouterLink } from 'react-router-dom'
+import PodcastLinks from './PodcastLinks'
 
 const Header = () => {
   const podcast = useGlobalStore(state => state.podcast)
@@ -41,7 +42,15 @@ const Header = () => {
               </Typography>
             </Link>
           </Box>
-          <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: SPACING.MEDIUM.PX,
+              justifyContent: 'flex-end'
+            }}
+          >
+            <PodcastLinks />
             <Navigation />
           </Box>
         </Box>

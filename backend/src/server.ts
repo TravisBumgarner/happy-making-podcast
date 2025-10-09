@@ -105,7 +105,7 @@ app.get("/episode/:slug", async (req, res) => {
       ((episode as any)?.["content:encodedSnippet"] as string | undefined)
         ?.replace(/<[^>]+>/g, "")
         .slice(0, 180) ?? FALLBACK_DESCRIPTION;
-    const image = (episode as any)?.itunes?.image ?? OG_IMAGE;
+    const image = OG_IMAGE;
     const url = episode?.link ?? `${FALLBACK_URL}/episode/${slug}`;
 
     const withOg = injectOg(baseHTML, { title, description, image, url });

@@ -29,5 +29,25 @@ export const ROUTES: Record<string, Route> = {
     key: 'recommend',
     href: () => '/recommend',
     label: 'Recommend a Guest'
+  },
+  apple: {
+    key: 'apple',
+    href: () => 'foo',
+    label: 'Apple Podcasts'
+  },
+  spotify: {
+    key: 'spotify',
+    href: () => 'foo',
+    label: 'Spotify'
+  },
+  amazon: {
+    key: 'amazon',
+    href: () => 'foo',
+    label: 'Amazon Music'
+  },
+  discord: {
+    key: 'discord',
+    href: () => 'foo',
+    label: 'Discord'
   }
-}
+} as const

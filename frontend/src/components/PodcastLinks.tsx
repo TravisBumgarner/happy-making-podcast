@@ -29,6 +29,7 @@ const PodcastLinks = () => {
           sx={{ display: 'block' }}
           component={RouterLink}
           to={ROUTES[link].href()}
+          target={ROUTES[link].target}
         >
           {iconMap[link]
             ? React.createElement(iconMap[link]!, { size: 24 })

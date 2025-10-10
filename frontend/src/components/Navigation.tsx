@@ -14,9 +14,10 @@ import Link from '@mui/material/Link'
 
 const DROPDOWN_ROUTES: Array<keyof typeof ROUTES | 'divider'> = [
   'feed',
+  'recommend',
   'about',
-  'contact',
-  'recommend'
+  'aboutAuthor',
+  'contact'
 ]
 
 const DropdownLinks = ({ onClose }: { onClose: () => void }) => {
@@ -26,7 +27,12 @@ const DropdownLinks = ({ onClose }: { onClose: () => void }) => {
         key === 'divider' ? (
           <Divider key={key + index} />
         ) : (
-          <Link component={RouterLink} key={key} to={ROUTES[key].href()}>
+          <Link
+            target={ROUTES[key].target}
+            component={RouterLink}
+            key={key}
+            to={ROUTES[key].href()}
+          >
             <MenuItem onClick={onClose}>{ROUTES[key].label}</MenuItem>
           </Link>
         )

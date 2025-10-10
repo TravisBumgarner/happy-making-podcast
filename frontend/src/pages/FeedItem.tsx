@@ -33,7 +33,9 @@ const FeedItem = () => {
       >
         <Box>
           <Typography variant="h2">{feedItem.title}</Typography>
-          <Typography variant="body2">{feedItem.pubDate}</Typography>
+          <Typography variant="body2">
+            {new Date(feedItem.pubDate).toLocaleDateString()}
+          </Typography>
         </Box>
         <audio
           controls

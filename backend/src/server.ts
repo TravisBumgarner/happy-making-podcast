@@ -46,6 +46,7 @@ app.use(
       "http://localhost:5173",
       "https://happymaking.art",
       "https://happymaking.nfshost.com",
+      "https://www.happymaking.art",
     ],
   })
 );

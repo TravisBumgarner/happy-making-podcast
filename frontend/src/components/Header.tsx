@@ -1,4 +1,4 @@
-import { Box, Link, List, ListItem, Typography } from '@mui/material'
+import { Box, Link, Typography } from '@mui/material'
 import useGlobalStore from '../store'
 import { ROUTES } from '../consts'
 import { SPACING } from '../styles/consts'

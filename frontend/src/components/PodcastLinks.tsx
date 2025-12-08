@@ -1,4 +1,4 @@
-import { Box, Link, List, ListItem } from '@mui/material'
+import { Box, Link } from '@mui/material'
 import { FONT_SIZES, SPACING } from '../styles/consts'
 import { FaApple, FaDiscord, FaSpotify, FaAmazon } from 'react-icons/fa'
 import { ROUTES } from '../consts'

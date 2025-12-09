@@ -1,9 +1,9 @@
-import { Routes, Route } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+import About from '../pages/About'
+import Contact from '../pages/Contact'
 import Feed from '../pages/Feed'
 import FeedItem from '../pages/FeedItem'
-import Contact from '../pages/Contact'
 import Recommend from '../pages/Recommend'
-import About from '../pages/About'
 
 import { ROUTES } from '../consts'
 import Error404 from '../pages/Error404'

@@ -1,19 +1,17 @@
 import { useEffect } from 'react'
 import useGlobalStore from '../store'
 
-const API_URL = import.meta.env.PROD
-  ? 'https://happymaking.art/api/rss'
-  : 'http://localhost:8000/api/rss'
+const API_URL = import.meta.env.PROD ? 'https://happymaking.art/api/rss' : 'http://localhost:8000/api/rss'
 
 const useFetchFeed = () => {
-  const setPodcast = useGlobalStore(state => state.setPodcast)
+  const setPodcast = useGlobalStore((state) => state.setPodcast)
 
   useEffect(() => {
     const controller = new AbortController()
     const fetchFeed = async () => {
       try {
         const res = await fetch(API_URL, {
-          signal: controller.signal
+          signal: controller.signal,
         })
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
@@ -21,14 +19,14 @@ const useFetchFeed = () => {
         setPodcast(data)
       } catch (err: any) {
         if (err.name !== 'AbortError') {
-          console.log(err.message || 'Failed to fetch feed')
+          alert(err.message || 'Failed to fetch feed')
         }
       }
     }
 
     fetchFeed()
     return () => controller.abort()
-  }, [])
+  }, [setPodcast])
 }
 
 export default useFetchFeed

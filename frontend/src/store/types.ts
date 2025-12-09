@@ -1,7 +1,7 @@
-import { type Episode, type PodcastFeed } from '../types'
+import type { RiversideEpisode, RiversideFeed } from '../types'
 
 export interface State {
-  podcast: PodcastFeed | null
-  setPodcast: (podcast: PodcastFeed) => void
-  getFeedItemByGuid: (guid: string) => Episode | undefined
+  podcast: RiversideFeed | null
+  setPodcast: (podcast: RiversideFeed) => void
+  getFeedItemByGuid: (guid: string) => RiversideEpisode | undefined
 }

@@ -1,9 +1,9 @@
 import { Box, Link } from '@mui/material'
-import { FONT_SIZES, SPACING } from '../styles/consts'
-import { FaApple, FaDiscord, FaSpotify, FaAmazon } from 'react-icons/fa'
-import { ROUTES } from '../consts'
-import { Link as RouterLink } from 'react-router-dom'
 import React from 'react'
+import { FaAmazon, FaApple, FaDiscord, FaSpotify } from 'react-icons/fa'
+import { Link as RouterLink } from 'react-router-dom'
+import { ROUTES } from '../consts'
+import { FONT_SIZES, SPACING } from '../styles/consts'
 
 const iconMap: Record<Partial<keyof typeof ROUTES>, React.ElementType> = {
   discord: FaDiscord,
@@ -26,13 +26,14 @@ const PodcastLinks = () => {
     >
       {LINKS.map(link => (
         <Link
+          key={link}
           sx={{ display: 'block' }}
           component={RouterLink}
           to={ROUTES[link].href()}
           target={ROUTES[link].target}
         >
           {iconMap[link]
-            ? React.createElement(iconMap[link]!, { size: 24 })
+            ? React.createElement(iconMap[link], { size: 24 })
             : ROUTES[link].label}
         </Link>
       ))}

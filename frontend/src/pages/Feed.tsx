@@ -20,7 +20,7 @@ const Feed = () => {
 
   return (
     <PageWrapper width="medium">
-      <List>
+      <List sx={{ gap: SPACING.MEDIUM.PX, display: 'flex', flexDirection: 'column' }}>
         {feedItems &&
           feedItems.map(feedItem => (
             <Link
@@ -48,6 +48,7 @@ const Feed = () => {
                     gap: SPACING.SMALL.PX
                   }}
                 >
+                  <img src={feedItem.itunes.image} alt={feedItem.title} style={{ width: '100%' }} />
                   <Typography variant="h2">{feedItem.title}</Typography>
 
                   <Typography variant="body2">

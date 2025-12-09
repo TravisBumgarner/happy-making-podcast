@@ -1,16 +1,15 @@
-import { GiHamburgerMenu } from 'react-icons/gi'
-
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Tooltip from '@mui/material/Tooltip'
+import { GiHamburgerMenu } from 'react-icons/gi'
 
 import Divider from '@mui/material/Divider'
+import Link from '@mui/material/Link'
 import { useCallback, useState } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '../consts'
 import { BORDER_RADIUS } from '../styles/consts'
-import { Link as RouterLink } from 'react-router-dom'
-import Link from '@mui/material/Link'
 
 const DROPDOWN_ROUTES: Array<keyof typeof ROUTES | 'divider'> = [
   'feed',

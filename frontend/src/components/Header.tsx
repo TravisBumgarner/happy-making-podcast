@@ -1,10 +1,10 @@
 import { Box, Link, Typography } from '@mui/material'
-import useGlobalStore from '../store'
+import { Link as RouterLink } from 'react-router-dom'
 import { ROUTES } from '../consts'
+import PageWrapper from '../sharedComponents/PageWrapper'
+import useGlobalStore from '../store'
 import { SPACING } from '../styles/consts'
 import Navigation from './Navigation'
-import PageWrapper from '../sharedComponents/PageWrapper'
-import { Link as RouterLink } from 'react-router-dom'
 import PodcastLinks from './PodcastLinks'
 
 const Header = () => {
@@ -24,7 +24,7 @@ const Header = () => {
           >
             <Box>
               <img
-                src={podcast.image.url}
+                src={podcast.itunes.image}
                 alt={podcast.title}
                 style={{ width: '50px' }}
               />
@@ -38,7 +38,7 @@ const Header = () => {
                 {podcast.title}
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                {podcast.itunes.subtitle}
+                A podcast for hobbying vicariously.
               </Typography>
             </Link>
           </Box>

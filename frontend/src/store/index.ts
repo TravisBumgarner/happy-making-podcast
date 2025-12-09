@@ -1,13 +1,13 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { type State } from './types'
-import { type PodcastFeed } from '../types'
+import {  type RiversideFeed } from '../types'
 
 const useGlobalStore = create<State>()(
   devtools(
     (set, get) => ({
       podcast: null,
-      setPodcast: (podcast: PodcastFeed) => set({ podcast }),
+      setPodcast: (podcast: RiversideFeed) => set({ podcast }),
       getFeedItemByGuid: (guid: string) => {
         return get().podcast?.items.find(item => item.guid === guid)
       }

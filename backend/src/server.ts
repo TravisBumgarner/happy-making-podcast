@@ -6,7 +6,7 @@ import cors from "cors";
 import fs from "fs";
 import { fileURLToPath } from "url";
 
-const FEED_URL = "https://feeds.captivate.fm/happy-making/";
+const FEED_URL = "https://api.riverside.fm/hosting/JNs9HOIz.rss";
 
 const FALLBACK_TITLE = "Happy Making";
 const FALLBACK_DESCRIPTION = "A podcast for hobbying vicariously.";
@@ -83,6 +83,7 @@ app.get("/api/rss", async (_req: Request, res: Response) => {
     const response = await fetch(FEED_URL);
     const xml = await response.text();
     const feed = await parser.parseString(xml);
+    console.log(feed)
     res.json(feed);
   } catch (err) {
     console.error(err);
@@ -97,6 +98,7 @@ app.get("/episode/:slug", async (req, res) => {
   try {
     const response = await fetch(FEED_URL);
     const xml = await response.text();
+    console.log(xml)
     const feed = await parser.parseString(xml);
     console.log(feed.items);
     const episode = feed.items.find(({ guid }) => guid === slug);

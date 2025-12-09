@@ -24,7 +24,7 @@ const Header = () => {
           >
             <Box>
               <img
-                src={podcast.image.url}
+                src={podcast.itunes.image}
                 alt={podcast.title}
                 style={{ width: '50px' }}
               />

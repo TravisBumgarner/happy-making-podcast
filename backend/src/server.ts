@@ -101,10 +101,7 @@ app.get("/episode/:slug", async (req, res) => {
 		const episode = feed.items.find(({ guid }) => guid === slug);
 
 		const title = episode?.title ?? FALLBACK_TITLE;
-		const description =
-			((episode as any)?.["content:encodedSnippet"] as string | undefined)
-				?.replace(/<[^>]+>/g, "")
-				.slice(0, 180) ?? FALLBACK_DESCRIPTION;
+		const description = episode?.contentSnippet ? `${episode.contentSnippet.slice(0, 180)}...` : FALLBACK_DESCRIPTION;
 		const image = OG_IMAGE;
 		const url = episode?.link ?? `${FALLBACK_URL}/episode/${slug}`;
 

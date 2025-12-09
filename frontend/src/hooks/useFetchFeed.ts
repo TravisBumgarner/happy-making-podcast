@@ -17,7 +17,7 @@ const useFetchFeed = () => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const data = await res.json()
         setPodcast(data)
-      } catch (err: Error) {
+      } catch (err: any) {
         if (err.name !== 'AbortError') {
           alert(err.message || 'Failed to fetch feed')
         }

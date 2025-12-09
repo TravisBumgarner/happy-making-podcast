@@ -6,7 +6,6 @@ import { Box, Typography } from '@mui/material'
 import { convertCloudinaryUrlsToImages } from '../utils/imageParser'
 import PageWrapper from '../sharedComponents/PageWrapper'
 import { BORDER_RADIUS, SPACING, subtleBackground } from '../styles/consts'
-import YouTubeEmbed from '../sharedComponents/Youtube'
 
 const FeedItem = () => {
   const { guid } = useParams<{ guid: string }>()

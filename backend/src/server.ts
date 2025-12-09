@@ -83,7 +83,6 @@ app.get("/api/rss", async (_req: Request, res: Response) => {
     const response = await fetch(FEED_URL);
     const xml = await response.text();
     const feed = await parser.parseString(xml);
-    console.log(feed)
     res.json(feed);
   } catch (err) {
     console.error(err);
@@ -98,9 +97,7 @@ app.get("/episode/:slug", async (req, res) => {
   try {
     const response = await fetch(FEED_URL);
     const xml = await response.text();
-    console.log(xml)
     const feed = await parser.parseString(xml);
-    console.log(feed.items);
     const episode = feed.items.find(({ guid }) => guid === slug);
 
     const title = episode?.title ?? FALLBACK_TITLE;

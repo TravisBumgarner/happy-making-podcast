@@ -45,9 +45,10 @@ const FeedItem = () => {
             borderRadius: BORDER_RADIUS.ZERO.PX
           }}
         />
-        {feedItem.youtube?.url && (
+        <img src={feedItem.itunes.image} alt="" style={{ width: '100%' }} />
+        {/* {feedItem.youtube?.url && (
           <YouTubeEmbed videoUrl={feedItem.youtube.url} />
-        )}
+        )} */}
         <Box
           sx={{
             // Text styles

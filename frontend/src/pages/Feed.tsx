@@ -1,7 +1,6 @@
 import { Box, Button, List, ListItem, Typography, useTheme } from '@mui/material'
 import useGlobalStore from '../store'
 import { Link as RouterLink } from 'react-router-dom'
-import Link from '@mui/material/Link'
 
 import { ROUTES } from '../consts'
 import { SPACING, subtleBackground } from '../styles/consts'
@@ -39,8 +38,8 @@ const Feed = () => {
               >
                 <Typography variant="h2">{feedItem.title}</Typography>
 
-                <Typography variant="body2">
-                  {new Date(feedItem.pubDate).toLocaleDateString()}
+                <Typography variant="body1">
+                  Season {feedItem.itunes.season} - Episode {feedItem.itunes.episode} - Published {new Date(feedItem.pubDate).toLocaleDateString()}
                 </Typography>
                 <img src={feedItem.itunes.image} alt={feedItem.title} style={{ width: '100%' }} />
                 <Typography variant="body1" color="textSecondary">

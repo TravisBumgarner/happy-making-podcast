@@ -32,8 +32,8 @@ const FeedItem = () => {
       >
         <Typography variant="h2">{feedItem.title}</Typography>
 
-        <Typography variant="body2">
-          {new Date(feedItem.pubDate).toLocaleDateString()}
+        <Typography variant="body1">
+          Season {feedItem.itunes.season} - Episode {feedItem.itunes.episode} - Published {new Date(feedItem.pubDate).toLocaleDateString()}
         </Typography>
         <audio
           controls

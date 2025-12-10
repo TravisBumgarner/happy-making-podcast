@@ -51,6 +51,7 @@ export interface RiversideEpisode {
   itunes: {
     summary: string
     explicit: string
+    episode: string
     duration: string
     image: string
     season: string

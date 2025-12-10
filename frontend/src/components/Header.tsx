@@ -46,11 +46,12 @@ const Header = () => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: SPACING.MEDIUM.PX,
               justifyContent: 'flex-end'
             }}
           >
-            <PodcastLinks />
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <PodcastLinks />
+            </Box>
             <Navigation />
           </Box>
         </Box>

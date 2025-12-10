@@ -16,12 +16,34 @@ const DROPDOWN_ROUTES: Array<keyof typeof ROUTES | 'divider'> = [
   'recommend',
   'about',
   'aboutAuthor',
-  'contact'
+  'contact',
+]
+
+const MOBILE_DROPDOWN_ROUTES: Array<keyof typeof ROUTES | 'divider'> = [
+  'apple',
+  'spotify',
+  'amazon',
+  'divider'
 ]
 
 const DropdownLinks = ({ onClose }: { onClose: () => void }) => {
   return (
     <>
+      {MOBILE_DROPDOWN_ROUTES.map((key, index) =>
+        key === 'divider' ? (
+          <Divider sx={{ display: { xs: 'block', sm: 'none' } }} key={key + index} />
+        ) : (
+          <Link
+            sx={{ display: { xs: 'block', sm: 'none' } }}
+            target={ROUTES[key].target}
+            component={RouterLink}
+            key={key}
+            to={ROUTES[key].href()}
+          >
+            <MenuItem onClick={onClose}>{ROUTES[key].label}</MenuItem>
+          </Link>
+        )
+      )}
       {DROPDOWN_ROUTES.map((key, index) =>
         key === 'divider' ? (
           <Divider key={key + index} />

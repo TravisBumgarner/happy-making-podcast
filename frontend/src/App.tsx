@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import AppThemeProvider from './styles/Theme'
 import useFetchFeed from './hooks/useFetchFeed'
 import useGlobalStore from './store'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   const podcast = useGlobalStore(state => state.podcast)!!
@@ -33,12 +34,14 @@ function App() {
   return (
     <Box
       sx={{
-        padding: SPACING.MEDIUM.PX,
+        paddingY: SPACING.MEDIUM.PX,
+        paddingX: SPACING.SMALL.PX,
         display: 'flex',
         flexDirection: 'column',
         gap: SPACING.LARGE.PX
       }}
     >
+      <ScrollToTop />
       <Header />
       <Router />
     </Box>

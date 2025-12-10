@@ -30,7 +30,7 @@ const PageWrapper = ({
     if (width === 'small') {
       return {
         width: '400px',
-        maxWidth: '95%',
+        maxWidth: '100%',
         margin: '0 auto'
       }
     }
@@ -38,7 +38,7 @@ const PageWrapper = ({
     if (width === 'medium') {
       return {
         width: '600px',
-        maxWidth: '95%',
+        maxWidth: '100%',
         margin: '0 auto'
       }
     }
@@ -54,22 +54,22 @@ const PageWrapper = ({
         ...widthCSS,
         ...(minHeight
           ? {
-              minHeight: '70vh'
-            }
+            minHeight: '70vh'
+          }
           : {}),
         ...(verticallyAlign
           ? {
-              justifyContent: 'center'
-            }
+            justifyContent: 'center'
+          }
           : {}),
         ...(staticContent
           ? {
-              gap: SPACING.MEDIUM.PX,
-              boxSizing: 'border-box',
-              ul: {
-                marginLeft: SPACING.LARGE.PX
-              }
+            gap: SPACING.MEDIUM.PX,
+            boxSizing: 'border-box',
+            ul: {
+              marginLeft: SPACING.LARGE.PX
             }
+          }
           : {}),
         ...(sx ? sx : {})
       }}

@@ -1,4 +1,4 @@
-import { Box, List, ListItem, Typography, useTheme } from '@mui/material'
+import { Box, Button, List, ListItem, Typography, useTheme } from '@mui/material'
 import useGlobalStore from '../store'
 import { Link as RouterLink } from 'react-router-dom'
 import Link from '@mui/material/Link'
@@ -23,50 +23,39 @@ const Feed = () => {
       <List sx={{ gap: SPACING.MEDIUM.PX, display: 'flex', flexDirection: 'column' }}>
         {feedItems &&
           feedItems.map(feedItem => (
-            <Link
-              component={RouterLink}
+            <ListItem
               key={feedItem.guid}
-              to={ROUTES.episode.href(feedItem.guid)}
+              sx={{
+                backgroundColor: subtleBackground(theme.palette.mode),
+              }}
             >
-              <ListItem
+              <Box
                 sx={{
-                  backgroundColor: subtleBackground(theme.palette.mode),
-                  '&:hover': {
-                    backgroundColor: subtleBackground(
-                      theme.palette.mode,
-                      'slightly'
-                    )
-                  }
+                  padding: { sm: SPACING.MEDIUM.PX, xs: SPACING.SMALL.PX },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: SPACING.SMALL.PX
                 }}
               >
-                {' '}
-                <Box
-                  sx={{
-                    padding: SPACING.MEDIUM.PX,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: SPACING.SMALL.PX
-                  }}
-                >
-                  <img src={feedItem.itunes.image} alt={feedItem.title} style={{ width: '100%' }} />
-                  <Typography variant="h2">{feedItem.title}</Typography>
+                <Typography variant="h2">{feedItem.title}</Typography>
 
-                  <Typography variant="body2">
-                    {new Date(feedItem.pubDate).toLocaleDateString()}
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: getFirstParagraph(feedItem.content)
-                      }}
-                    />
-                  </Typography>
-                </Box>
-              </ListItem>
-            </Link>
+                <Typography variant="body2">
+                  {new Date(feedItem.pubDate).toLocaleDateString()}
+                </Typography>
+                <img src={feedItem.itunes.image} alt={feedItem.title} style={{ width: '100%' }} />
+                <Typography variant="body1" color="textSecondary">
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: getFirstParagraph(feedItem.content)
+                    }}
+                  />
+                </Typography>
+                <Button component={RouterLink} to={ROUTES.episode.href(feedItem.guid)} variant='contained' fullWidth>Listen!</Button>
+              </Box>
+            </ListItem>
           ))}
       </List>
-    </PageWrapper>
+    </PageWrapper >
   )
 }
 

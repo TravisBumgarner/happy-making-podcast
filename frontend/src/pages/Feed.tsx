@@ -24,6 +24,7 @@ const Feed = () => {
         {feedItems &&
           feedItems.map(feedItem => (
             <ListItem
+              key={feedItem.guid}
               sx={{
                 backgroundColor: subtleBackground(theme.palette.mode),
               }}
@@ -36,12 +37,12 @@ const Feed = () => {
                   gap: SPACING.SMALL.PX
                 }}
               >
-                <img src={feedItem.itunes.image} alt={feedItem.title} style={{ width: '100%' }} />
                 <Typography variant="h2">{feedItem.title}</Typography>
 
                 <Typography variant="body2">
                   {new Date(feedItem.pubDate).toLocaleDateString()}
                 </Typography>
+                <img src={feedItem.itunes.image} alt={feedItem.title} style={{ width: '100%' }} />
                 <Typography variant="body1" color="textSecondary">
                   <span
                     dangerouslySetInnerHTML={{

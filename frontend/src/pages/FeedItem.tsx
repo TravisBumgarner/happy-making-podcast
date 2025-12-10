@@ -23,19 +23,18 @@ const FeedItem = () => {
     <PageWrapper width="medium">
       <Box
         sx={{
-          padding: SPACING.LARGE.PX,
+          padding: { sm: SPACING.MEDIUM.PX, xs: SPACING.SMALL.PX },
           display: 'flex',
           flexDirection: 'column',
-          gap: SPACING.MEDIUM.PX,
-          backgroundColor: subtleBackground(theme.palette.mode)
+          gap: SPACING.SMALL.PX,
+          backgroundColor: subtleBackground(theme.palette.mode),
         }}
       >
-        <Box>
-          <Typography variant="h2">{feedItem.title}</Typography>
-          <Typography variant="body2">
-            {new Date(feedItem.pubDate).toLocaleDateString()}
-          </Typography>
-        </Box>
+        <Typography variant="h2">{feedItem.title}</Typography>
+
+        <Typography variant="body2">
+          {new Date(feedItem.pubDate).toLocaleDateString()}
+        </Typography>
         <audio
           controls
           src={feedItem.enclosure.url}
@@ -44,10 +43,7 @@ const FeedItem = () => {
             borderRadius: BORDER_RADIUS.ZERO.PX
           }}
         />
-        <img src={feedItem.itunes.image} alt="" style={{ width: '100%' }} />
-        {/* {feedItem.youtube?.url && (
-          <YouTubeEmbed videoUrl={feedItem.youtube.url} />
-        )} */}
+        <img src={feedItem.itunes.image} alt={feedItem.title} style={{ width: '100%' }} />
         <Box
           sx={{
             // Text styles
@@ -89,7 +85,7 @@ const FeedItem = () => {
           dangerouslySetInnerHTML={{ __html: processedDescription }}
         />
       </Box>
-    </PageWrapper>
+    </PageWrapper >
   )
 }
 

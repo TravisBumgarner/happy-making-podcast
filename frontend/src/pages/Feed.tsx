@@ -31,7 +31,7 @@ const Feed = () => {
             >
               <Box
                 sx={{
-                  padding: SPACING.MEDIUM.PX,
+                  padding: { sm: SPACING.MEDIUM.PX, xs: SPACING.SMALL.PX },
                   display: 'flex',
                   flexDirection: 'column',
                   gap: SPACING.SMALL.PX
